@@ -1,0 +1,65 @@
+#!/usr/bin/env python2.7
+
+'''
+This module recalculate the path for the special traffic
+
+Author: shark803
+Date :2016/1/21
+
+'''
+from __future__ import print_function
+
+
+from  network_topo import *
+import networkx as nx
+import matplotlib.pyplot as plt
+
+
+
+NodeList =  ['iosxrv-1', 'iosxrv-2', 'iosxrv-3', 'iosxrv-4', 'iosxrv-5', 'iosxrv-6', 'iosxrv-7', 'iosxrv-8']
+LinkList=[('iosxrv-1', 'iosxrv-2',43),('iosxrv-2', 'iosxrv-3',47),('iosxrv-3', 'iosxrv-4',51),
+           ('iosxrv-4', 'iosxrv-5',62),('iosxrv-5', 'iosxrv-8',91),
+            ('iosxrv-6', 'iosxrv-7',81),('iosxrv-1', 'iosxrv-6',88),
+            ('iosxrv-2', 'iosxrv-7',78),('iosxrv-7', 'iosxrv-8',93),('iosxrv-3', 'iosxrv-7',85),('iosxrv-4', 'iosxrv-8',99)]
+origin_path = []
+color_list = ['r'] 
+
+def logic_topo_gen(graph, conges_edge_start,conges_edge_end):
+    graph.remove_edges_from([(conges_edge_start,conges_edge_end)])
+    return graph
+
+def get_service_chain(SCStr):
+    return SCStr.split('-')
+
+
+def get_key_point(SVList,src,dst):
+    SVList.insert(0,src)
+    SVList.append(dst)
+    return SVList 
+
+
+def cal_optimal_path():
+    pass
+
+if __name__ == "__main__":
+    SClist1 = "a-b"
+    SClist2 = "iosxrv-3"
+    src = 'iosxrv-1'
+    dst = 'iosxrv-5'
+
+    SVList = get_service_chain(SClist1) 
+    SVK = get_service_chain(SClist2) 
+    SVList = get_key_point(SVList,src,dst)
+    SVK = get_key_point(SVK,src,dst)
+    print(SVList) 
+
+    topo = network_topo()
+    topo.topo_discover(NodeList,LinkList)
+    logic_graph = logic_topo_gen (topo,'iosxrv-1','iosxrv-2')
+
+    print(logic_graph.edges())
+    #topo.show_topo(topo.get_origin_path(src,dst))
+
+
+
+
